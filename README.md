@@ -1,13 +1,16 @@
-#Dockernized Django
+# Dockernized Django
 
 This is barebone Django setup for docker & nginx & postgreserver all in one container.
 
-##How to run
+## How to run
 
-1. setprivate key 
+1. set private key
 
-#cd www-cert
-#openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout client.key -out client.crt -config localhost.conf
+  cd www-cert
+  
+  openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout client.key -out client.crt -config localhost.conf
+
+
 
 
 2. Set environment variable
@@ -69,8 +72,10 @@ export DJANGO_SUPERUSER_USERNAME=admin
 
 
 2. Compose Docker
-> #docker-compose build
-> #docker-compose up -d
+
+docker-compose build
+
+docker-compose up -d
 
 
 
