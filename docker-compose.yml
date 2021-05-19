@@ -1,0 +1,85 @@
+version: '3'
+services:
+  #python Service
+  app:
+    volumes:
+       - ./django-app:/code
+       - static-asset:/code/static/
+
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    entrypoint: ["setup/docker-entrypoint.sh"]
+    container_name: app
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+      DJANGO_DB_SECRET: ${DJANGO_DB_SECRET}
+      DJANGO_SQL_DATABASE: ${DJANGO_SQL_DATABASE}
+      DJANGO_SQL_USERNAME: ${DJANGO_SQL_USERNAME}
+      DJANGO_SQL_PASSWORD: ${DJANGO_SQL_PASSWORD}
+      POSTGRES_USERNAME: ${DJANGO_SQL_USERNAME}
+      POSTGRES_PASSWORD: ${DJANGO_SQL_PASSWORD}
+      POSTGRES_PORT: ${DJANGO_DB_PORT}
+      DJANGO_DB_SERVICE_NAME: ${DJANGO_DB_SERVICE_NAME}
+      DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD}
+      DJANGO_SUPERUSER_EMAIL: ${DJANGO_SUPERUSER_EMAIL}
+      DJANGO_SUPERUSER_USERNAME: ${DJANGO_SUPERUSER_USERNAME}
+    networks:
+      - app-network
+
+  #Nginx Service
+  webserver:
+    image: nginx:alpine
+    container_name: webserver
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "${APP_PORT}:80"
+      - "443:443"
+    volumes:
+      - static-asset:/code/static/
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+      - ./www-certs:/etc/www-certs
+    networks:
+      - app-network
+
+  #POSTGRES Service
+  db:
+    image: 'postgres'
+    container_name: db
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ${DJANGO_SQL_DATABASE}
+      POSTGRES_PASSWORD: ${DJANGO_SQL_PASSWORD}
+      SERVICE_TAGS: dev
+      PGDATA: /var/lib/postgresql/data/mydata
+
+
+    volumes:
+      - ./posgres/db:/var/lib/postgresql/data/pgdata
+    networks:
+      - app-network
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
+
+
+#Volumes 
+volumes:
+  posgres-db:
+    driver: local 
+  django-app:
+    driver: local 
+  static-asset:
+    driver: local 
+  www-certs:
+    driver: local
