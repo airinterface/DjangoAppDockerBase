@@ -80,3 +80,6 @@ docker-compose up -d
 
 
 
+
+3. Terminal
+docker exec -it app /bin/sh

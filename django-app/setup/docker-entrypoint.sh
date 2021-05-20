@@ -27,16 +27,18 @@ python manage.py collectstatic --noinput
 
 
 
-if [[ -v DJANGO_SUPERUSER_USERNAME ]] && [[ -v DJANGO_SUPERUSER_EMAIL ]];
+if [[ ! -z "${DJANGO_SUPERUSER_USERNAME}" ]] && [[ ! -z "${DJANGO_SUPERUSER_EMAIL}" ]];
 then
   echo "Creating admin user $DJANGO_SUPERUSER_USERNAME ..."
   python manage.py createsuperuser --noinput --username "$DJANGO_SUPERUSER_USERNAME"\
-       --email "$DJANGO_SUPERUSER_EMAIL" 2> /dev/null || \
-    echo "Superuser $DJANGO_SUPERUSER_USERNAME already exists"
+       --email "${DJANGO_SUPERUSER_EMAIL}" 2> /dev/null || \
+    echo "Superuser ${DJANGO_SUPERUSER_USERNAME} already exists"
+else
+  echo "Environment variable not set ${DJANGO_SUPERUSER_USERNAME},${DJANGO_SUPERUSER_EMAIL}"
 fi
 
 
-
+echo "DJANGO_SUPERUSER_USERNAME=${DJANGO_SUPERUSER_USERNAME}"
 echo "USER=${DJANGO_SUPERUSER_EMAIL}"
 
 
