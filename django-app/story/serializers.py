@@ -4,7 +4,7 @@ from rest_framework import serializers
 class StorySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Story
-        fields = ['index', 'title', 'img', 'data']
+        fields = ['index', 'title', 'body', 'img', 'data']
 
     def to_representation(self, instance):
         ret = super(StorySerializer, self).to_representation(instance)
