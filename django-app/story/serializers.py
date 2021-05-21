@@ -4,7 +4,7 @@ from rest_framework import serializers
 class StorySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Story
-        fields = ['index', 'title', 'data']
+        fields = ['index', 'title', 'img', 'data']
 
     def to_representation(self, instance):
         ret = super(StorySerializer, self).to_representation(instance)
@@ -20,9 +20,10 @@ class StorySerializer(serializers.HyperlinkedModelSerializer):
         res = {};
         res['title'] = data['title']
         res['body']  = data.get('body','')
+        res['index'] = data.get('index', 0 )
+        if( 'img' in data and len( data['img']) > 0  ):
+            res['img'] =  data['img'];
         d   = data.get( 'data', {} );
-        if( 'img' in d ):
-            res['img'] =  d['img'];
         res['colors']  = d.get('colors',{})
         res['buttons'] = d.get('buttons',{})
         return res;

@@ -7,7 +7,7 @@ class StoryViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
-    queryset = Story.objects.all().order_by('-index')
+    queryset = Story.objects.all().order_by('index')
     serializer_class = StorySerializer
     permission_classes = []
 
