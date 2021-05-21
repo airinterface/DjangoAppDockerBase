@@ -26,7 +26,6 @@ python manage.py collectstatic --noinput
 
 
 
-
 if [[ ! -z "${DJANGO_SUPERUSER_USERNAME}" ]] && [[ ! -z "${DJANGO_SUPERUSER_EMAIL}" ]];
 then
   echo "Creating admin user $DJANGO_SUPERUSER_USERNAME ..."
@@ -38,8 +37,8 @@ else
 fi
 
 
-echo "DJANGO_SUPERUSER_USERNAME=${DJANGO_SUPERUSER_USERNAME}"
-echo "USER=${DJANGO_SUPERUSER_EMAIL}"
+echo "Loading initial story"
+python manage.py loaddata story
 
 
 echo "Django docker is fully configured successfully."
