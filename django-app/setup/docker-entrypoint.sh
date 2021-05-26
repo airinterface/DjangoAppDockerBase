@@ -37,8 +37,6 @@ else
 fi
 
 
-echo "Loading initial story"
-python manage.py loaddata story
 
 
 echo "Django docker is fully configured successfully."
