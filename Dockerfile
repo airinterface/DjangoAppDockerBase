@@ -22,5 +22,9 @@ WORKDIR /code
 # install dependencies
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
+COPY ./django-app/setup/docker-entrypoint.sh /code/setup/docker-entrypoint.sh
+RUN chmod +x /code/setup/docker-entrypoint.sh
+
+
 
 
